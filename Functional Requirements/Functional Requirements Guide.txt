@@ -1,0 +1,10 @@
+Functional Requirements Link:
+https://cebuinstituteoftechnology-my.sharepoint.com/:w:/g/personal/yoshinori_kyonojr_cit_edu/EXQrie22iXZPtZKVSec5GJgBSmHxAGJEcp36wBLmlm1xWg?e=AMgHoP
+
+After making revisions, please export as PDF and label accordingly on Revision # and Revision Date.
+Format: FRV<Revision#.#.<MMDDYY>.pdf
+
+Example:
+FRV1.0.100524.pdf
+FRV1.1.100524.pdf (If revisions are made on the same day increment fractional part, else increment  integral part)
+FRV2.0.100624

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trucking Logistics</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            text-align: center;
+        }
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .box {
+            width: 200px;
+            height: 150px;
+            background-color: #ffffff;
+            border: 2px solid #cccccc;
+            margin: 0 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .box:hover {
+            transform: scale(1.05);
+            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+        }
+        .box h2 {
+            font-size: 1.5rem;
+            color: #333333;
+            margin-bottom: 20px;
+        }
+        .box a {
+            display: block;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        .box a:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>Choose Your Role</h1>
+    <div class="container">
+        <!-- Customer box -->
+        <div class="box">
+            <h2>Customer</h2>
+            <a href="{% url 'customer_list' %}">Proceed as Customer</a>
+        </div>
+
+        <!-- Staff box -->
+        <div class="box">
+            <h2>Staff</h2>
+            <a href="{% url 'user_list' %}">Proceed as Staff</a>
+        </div>
+    </div>
+</body>
+</html>

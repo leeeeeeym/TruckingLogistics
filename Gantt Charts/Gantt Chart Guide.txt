@@ -1,0 +1,10 @@
+Gantt chart Link:
+https://cebuinstituteoftechnology-my.sharepoint.com/:x:/g/personal/yoshinori_kyonojr_cit_edu/EXerykgrcoZDpW7OYIlqn9IBmwMr0xtpge3E4PwImC7aqA?e=klOICv
+
+After making revisions, please export as Excel and label accordingly on Revision # and Revision Date.
+Format: GCV<Revision#.#.<MMDDYY>.2FEaQrXzLLBWDTsxJbNHaybExICDmXwTj9vdkyQ3iKY3v
+
+Example:
+GCV1.0.100524.pdf
+GCV1.1.100524.pdf (If revisions are made on the same day increment fractional part, else increment  integral part)
+GCV2.0.100624

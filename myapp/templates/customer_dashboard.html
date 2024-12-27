@@ -1,0 +1,310 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Dashboard</title>
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            display: flex;
+            min-height: 100vh;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+
+
+        .content {
+            margin-left: 270px;
+            width: calc(100% - 270px);
+            padding: 40px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .header h2 {
+            font-size: 24px;
+            color: #111827;
+        }
+
+
+        .profile-menu {
+            position: relative;
+        }
+
+        .profile-button {
+            background-color: #1e3a8a;
+            color: white;
+            font-size: 16px;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            min-width: 150px;
+            max-width: 100%;
+            justify-content: space-between;
+            width: auto;
+        }
+
+        .profile-button:hover {
+            background-color: #162d7d;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile-icon {
+            width: 24px;
+            height: 24px;
+            background: url("{% static 'images/profile_icon.png' %}") no-repeat center center;
+            background-size: contain;
+        }
+
+        .profile-username {
+            flex-grow: 1;
+            text-align: center;
+            font-weight: 500;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+
+        .profile-dropdown {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 60px;
+            background-color: #ffffff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            min-width: 150px;
+            width: 100%;
+        }
+
+        .profile-dropdown form button {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            width: 100%;
+            font-size: 14px;
+            color: #333;
+            background: none;
+            border: none;
+            text-align: left;
+            cursor: pointer;
+            gap: 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        .profile-dropdown form button:hover {
+            background-color: #f1f5f9;
+        }
+
+        .profile-menu:hover .profile-dropdown,
+        .profile-menu:focus-within .profile-dropdown {
+            display: block;
+        }
+
+
+        .table-container {
+            background-color: #f1f5f9;
+            border-radius: 8px;
+            overflow-x: auto;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background-color: #1e3a8a;
+            color: white;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+
+        tbody tr:hover {
+            background-color: #f1f5f9;
+        }
+
+        td.actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-start;
+        }
+
+
+        .btn-edit, .btn-delete, .btn-assign {
+            padding: 8px 12px;
+            font-size: 14px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            color: white;
+            text-decoration: none;
+            transition: background-color 0.3s ease, transform 0.2s;
+        }
+
+        .btn-edit {
+            background-color: #4caf50;
+        }
+
+        .btn-edit:hover {
+            background-color: #388e3c;
+            transform: translateY(-2px);
+        }
+
+        .btn-delete {
+            background-color: #f44336;
+        }
+
+        .btn-delete:hover {
+            background-color: #d32f2f;
+            transform: translateY(-2px);
+        }
+
+        .btn-assign {
+            background-color: #1e90ff;
+        }
+
+        .btn-assign:hover {
+            background-color: #1c7cd6;
+            transform: translateY(-2px);
+        }
+
+
+        .add-button-container {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 20px;
+        }
+
+        .add-button {
+            background-color: #1e3a8a;
+            color: white;
+            font-size: 16px;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: background-color 0.3s ease, transform 0.2s;
+        }
+
+        .add-button span {
+            font-size: 18px;
+        }
+
+        .add-button:hover {
+            background-color: #162d7d;
+            transform: translateY(-2px);
+        }
+        .customer-info h5 {
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        .customer-info {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    {% include 'includes/sidebar.html' %}
+
+    <div class="content">
+        <div class="header">
+            <h1>Customer Dashboard</h1>
+            <div class="profile-menu">
+                <button class="profile-button">
+                    <span class="profile-icon"></span>
+                    <span class="profile-username">{{ user.username }}</span>
+                </button>
+                <div class="profile-dropdown">
+                    <form method="post" action="{% url 'logout' %}">
+                        {% csrf_token %}
+                        <button type="submit">Logout</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    
+        <div class="table-container">
+    
+            {% if customer %}
+                <div class="customer-info">
+                    <h2>Customer Information</h2>
+                    <h5><strong>Company Name:</strong> {{ customer.company_name }}</h5>
+                    <h5><strong>Email:</strong> {{ customer.email }}</h5>
+                    <h5><strong>Contact Number:</strong> {{ customer.contact_number }}</h5>
+                    <h5><strong>Address:</strong> {{ customer.address }}</h5>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Container Number</th>
+                            <th>Size</th>
+                            <th>Weight</th>
+                            <th>Contents</th>
+                            <th>Assigned Driver</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for booking in customer.booking_set.all %}
+                            {% for container in booking.container_set.all %}
+                                <tr>
+                                    <td>{{ container.booking.booking_number }}-{{ container.container_id }}</td>
+                                    <td>{{ container.get_size_display }}</td>
+                                    <td>{{ container.weight }}</td>
+                                    <td>{{ container.contents }}</td>
+                                    <td>{{ container.driver }}</td>
+                                </tr>
+                            {% endfor %}
+                        {% empty %}
+                            <tr>
+                                <td colspan="5">No containers found.</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p>You are not assigned to any customer.</p>
+            {% endif %}
+        </div>
+    </div>
+    
+    </body>
+    </html>

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delete Customer</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        /* Basic Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+
+        /* Modal container */
+        .container {
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            width: 400px;
+            text-align: center;
+        }
+
+        /* Title styling */
+        h2 {
+            margin-bottom: 20px;
+            font-size: 24px;
+            color: #dc3545; /* Bootstrap danger color */
+        }
+
+        /* Paragraph styling */
+        p {
+            margin-bottom: 30px;
+            font-size: 16px;
+            line-height: 1.5;
+            color: #555;
+        }
+
+        /* Button styling */
+        button {
+            background-color: #dc3545; /* Danger button color */
+            color: white;
+            font-size: 16px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #c82333; /* Darker shade on hover */
+        }
+
+        /* Cancel link styling */
+        a {
+            display: inline-block;
+            margin-top: 15px;
+            text-decoration: none;
+            color: #007bff; /* Bootstrap primary color */
+            font-size: 16px;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Delete Role</h2>
+        <p>Are you sure you want to delete "{{ role.role_name }}"?</p>
+        <form method="POST">
+            {% csrf_token %}
+            <button type="submit">Confirm</button>
+        </form>
+        <a href="{% url 'role_list' %}">Cancel</a>
+    </div>
+</body>
+</html>

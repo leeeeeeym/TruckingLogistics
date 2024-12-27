@@ -1,0 +1,186 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Role Form</title>
+    <style>
+        /* Basic Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            display: flex;
+            min-height: 100vh;
+            background-color: #f8f9fa;
+        }
+
+        /* Sidebar styling (reuse from user form) */
+        .sidebar {
+            width: 250px;
+            background-color: #f3f4f6;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 20px;
+            height: 100vh;
+            position: fixed;
+            left: 0;
+        }
+
+        .sidebar img {
+            width: 100px;
+            margin-bottom: 20px;
+            border-radius: 50%;
+        }
+
+        .sidebar a {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            padding: 15px;
+            text-decoration: none;
+            color: #333;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .sidebar a.active, .sidebar a:hover {
+            background-color: #e0e7ff;
+            color: #1e3a8a;
+        }
+
+        .sidebar .icon {
+            margin-right: 10px;
+        }
+
+        .sidebar .bottom-links {
+            margin-top: auto;
+            margin-bottom: 20px;
+        }
+
+        /* Main Content */
+        .content {
+            margin-left: 270px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            padding: 40px;
+        }
+
+        .form-container {
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+            background-color: #f1f5f9;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #111827;
+        }
+
+        h2 {
+            font-size: 20px;
+            margin-bottom: 20px;
+            color: #1e3a8a;
+        }
+
+        button {
+            background-color: #1e3a8a;
+            color: #ffffff;
+            font-size: 16px;
+            padding: 10px;
+            width: 100%;
+            margin-top: 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #1a237e;
+        }
+
+        /* Back link styling */
+        a.back-link {
+            display: inline-block;
+            margin-top: 15px;
+            text-decoration: none;
+            color: #007bff;
+            font-size: 16px;
+        }
+
+        a.back-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Role list styling */
+        ul.role-list {
+            list-style-type: none;
+            margin-top: 20px;
+            padding: 0;
+        }
+
+        ul.role-list li {
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 16px;
+            color: #111827;
+        }
+
+        ul.role-list a {
+            color: #1e3a8a;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        ul.role-list a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+{% include 'includes/sidebar.html' %}
+
+
+<div class="content">
+        <div class="form-container">
+            <h1>Role Management</h1>
+            <h2>Role Form</h2>
+            <form method="POST" action="{% url 'role_create' %}">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit">Save Role</button>
+            </form>
+            <a href="{% url 'role_list' %}" class="back-link">Back to Role List</a>
+
+            <!-- Role List -->
+            <h2>Roles</h2>
+            <a href="{% url 'role_create' %}" class="back-link">Add Role</a>
+            <ul class="role-list">
+                {% for role in roles %}
+                    <li>
+                        {{ role.role_name }}
+                        <span>
+                            <a href="{% url 'role_update' role.role_id %}">Edit</a> |
+                            <a href="{% url 'role_delete' role.role_id %}">Delete</a>
+                        </span>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

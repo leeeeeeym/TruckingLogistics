@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f9fafb;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .register-container {
+            background: #fff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+            position: relative;
+        }
+
+        h2 {
+            font-size: 24px;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+            position: relative;
+        }
+
+        .form-label {
+            font-weight: 500;
+            color: #555;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .form-control {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 1rem;
+            height: 45px;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .form-control::placeholder {
+            color: #b3b3b3; /* Lighter placeholder color */
+        }
+
+        .form-control.is-invalid {
+            border-color: #d32f2f;
+            box-shadow: 0 0 4px rgba(211, 47, 47, 0.3);
+        }
+
+        .form-control.is-valid {
+            border-color: #388e3c;
+            box-shadow: 0 0 4px rgba(56, 142, 60, 0.3);
+        }
+
+        select.form-control {
+            appearance: none; /* Removes the default dropdown styling */
+            background-color: #f0f8ff; /* Light blue background for dropdown */
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="gray"><path d="M7 10l5 5 5-5z"/></svg>'); /* Down arrow */
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            background-size: 16px 16px;
+            color: #333; /* Darker font color */
+            padding-right: 30px; /* Add space for the arrow */
+            cursor: pointer;
+        }
+
+        .password-tooltip {
+            display: none;
+            position: absolute;
+            top: 0;
+            right: -260px;
+            width: 250px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background: #fff;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            padding: 10px;
+            color: #555;
+            font-size: 13px;
+            z-index: 1000;
+        }
+
+        .password-tooltip ul {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .password-tooltip li {
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .password-tooltip li.valid {
+            color: #388e3c;
+        }
+
+        .password-tooltip li.valid span {
+            color: #388e3c;
+        }
+
+        .password-tooltip li.invalid {
+            color: #d32f2f;
+        }
+
+        .password-tooltip li.invalid span {
+            color: #d32f2f;
+        }
+
+        .btn-primary {
+            background-color: #42a5f5;
+            border-color: #42a5f5;
+            font-size: 16px;
+            font-weight: 600;
+            padding: 12px 16px;
+            border-radius: 8px;
+            width: 100%;
+            text-transform: uppercase;
+            transition: background-color 0.3s, box-shadow 0.3s;
+        }
+
+        .btn-primary:hover {
+            background-color: #1e88e5;
+            box-shadow: 0 4px 10px rgba(66, 165, 245, 0.4);
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 14px;
+        }
+
+        .login-link a {
+            color: #42a5f5;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+<div class="register-container">
+    <h2>Create Your Account</h2>
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="id_username" class="form-label">Username</label>
+            <input type="text" id="id_username" name="username" class="form-control" placeholder="Choose a unique username"  required>
+            <small id="username-feedback" class="form-text"></small>
+        </div>
+
+        <div class="form-group">
+            <label for="id_email" class="form-label">Email Address</label>
+            <input type="email" id="id_email" name="email" class="form-control" placeholder="Enter your email"  required>
+            <small id="email-feedback" class="form-text"></small>
+        </div>
+
+        <div class="form-group">
+            <label for="id_role" class="form-label">Role</label>
+            <select id="id_role" name="role" class="form-control" required>
+                <option value="" disabled selected>Choose role</option>
+                <option value="customer">Customer</option>
+                <option value="office">Office</option>
+                <option value="driver">Driver</option>
+            </select>
+        </div>
+
+        <div class="form-group" style="position: relative;">
+            <label for="id_password1" class="form-label">Password</label>
+            <input type="password" id="id_password1" name="password1" class="form-control" placeholder="Enter your password"  required>
+            <div id="password-tooltip" class="password-tooltip">
+                <ul>
+                    <li id="length-rule" class="invalid"><span>⚠️</span> Must be at least 8 characters long.</li>
+                    <li id="numeric-rule" class="invalid"><span>⚠️</span> Cannot be entirely numeric.</li>
+                    <li id="common-rule" class="invalid"><span>⚠️</span> Cannot be a commonly used password.</li>
+                </ul>
+            </div>
+            <span class="toggle-password" id="togglePassword1" style="position: absolute; top: 38px; right: 32px; cursor: pointer;">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="gray" width="20" height="20" viewBox="0 0 24 24"><path d="M12 4.5c-7.78 0-11.54 6.38-11.54 6.38a1.27 1.27 0 000 1.24S4.22 18 12 18s11.54-6.38 11.54-6.38a1.27 1.27 0 000-1.24S19.78 4.5 12 4.5zm0 11a4.51 4.51 0 114.5-4.5 4.5 4.5 0 01-4.5 4.5zm0-7a2.5 2.5 0 102.5 2.5A2.5 2.5 0 0012 8.5z"/></svg>
+    </span>
+        </div>
+
+        <div class="form-group" style="position: relative;">
+            <label for="id_password2" class="form-label">Confirm Password</label>
+            <input type="password" id="id_password2" name="password2" class="form-control" placeholder="Re-enter your password" required>
+            <span class="toggle-password" id="togglePassword2" style="position: absolute; top: 38px; right: 32px; cursor: pointer;">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="gray" width="20" height="20" viewBox="0 0 24 24"><path d="M12 4.5c-7.78 0-11.54 6.38-11.54 6.38a1.27 1.27 0 000 1.24S4.22 18 12 18s11.54-6.38 11.54-6.38a1.27 1.27 0 000-1.24S19.78 4.5 12 4.5zm0 11a4.51 4.51 0 114.5-4.5 4.5 4.5 0 01-4.5 4.5zm0-7a2.5 2.5 0 102.5 2.5A2.5 2.5 0 0012 8.5z"/></svg>
+    </span>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Register</button>
+    </form>
+
+    <div class="login-link">
+        <p>Already have an account? <a href="{% url 'login' %}">Login here</a></p>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const usernameInput = document.getElementById("id_username");
+        const emailInput = document.getElementById("id_email");
+        const usernameFeedback = document.getElementById("username-feedback");
+        const emailFeedback = document.getElementById("email-feedback");
+
+        const password1 = document.getElementById("id_password1");
+        const password2 = document.getElementById("id_password2");
+        const tooltip = document.getElementById("password-tooltip");
+        const rules = {
+            length: document.getElementById("length-rule"),
+            numeric: document.getElementById("numeric-rule"),
+            common: document.getElementById("common-rule"),
+        };
+
+        const commonPasswords = ["password", "123456", "qwerty", "abc123"];
+
+
+        password1.addEventListener("focus", () => {
+            tooltip.style.display = "block";
+        });
+
+
+        password1.addEventListener("blur", () => {
+            setTimeout(() => (tooltip.style.display = "none"), 100);
+        });
+
+
+        password1.addEventListener("input", function () {
+            const value = password1.value;
+            const username = usernameInput.value.toLowerCase();
+
+
+            const lengthValid = value.length >= 8;
+            rules.length.classList.toggle("valid", lengthValid);
+            rules.length.classList.toggle("invalid", !lengthValid);
+            rules.length.querySelector("span").textContent = lengthValid ? "✔️" : "⚠️";
+
+
+            const numericValid = !/^\d+$/.test(value);
+            rules.numeric.classList.toggle("valid", numericValid);
+            rules.numeric.classList.toggle("invalid", !numericValid);
+            rules.numeric.querySelector("span").textContent = numericValid ? "✔️" : "⚠️";
+
+            // Common password and similarity validation
+            const isCommon = commonPasswords.includes(value.toLowerCase());
+            const isSimilarToUsername =
+                username && value.toLowerCase().includes(username);
+            const commonValid = !isCommon && !isSimilarToUsername;
+
+            rules.common.classList.toggle("valid", commonValid);
+            rules.common.classList.toggle("invalid", !commonValid);
+            rules.common.querySelector("span").textContent = commonValid
+                ? "✔️"
+                : isSimilarToUsername
+                    ? "⚠️ Password is too similar to username."
+                    : "";
+
+
+            const allValid = lengthValid && numericValid && commonValid;
+            password1.classList.toggle("is-valid", allValid);
+            password1.classList.toggle("is-invalid", !allValid);
+
+
+            validateConfirmPassword();
+        });
+
+
+        const validateConfirmPassword = () => {
+            if (password1.value === password2.value && password1.value !== "") {
+                password2.classList.add("is-valid");
+                password2.classList.remove("is-invalid");
+            } else {
+                password2.classList.add("is-invalid");
+                password2.classList.remove("is-valid");
+            }
+        };
+
+        password2.addEventListener("input", validateConfirmPassword);
+
+        const validateField = (field, url, feedbackElement) => {
+            field.addEventListener("input", function () {
+                const value = field.value.trim();
+
+                if (!value) {
+                    feedbackElement.textContent = "Field cannot be empty.";
+                    field.classList.add("is-invalid");
+                    field.classList.remove("is-valid");
+                    return;
+                }
+
+                fetch(`${url}?value=${value}`)
+                    .then((response) => response.json())
+                    .then((data) => {
+                        if (data.valid) {
+                            feedbackElement.textContent = data.message;
+                            feedbackElement.style.color = "#388e3c";
+                            field.classList.add("is-valid");
+                            field.classList.remove("is-invalid");
+                        } else {
+                            feedbackElement.textContent = data.message;
+                            feedbackElement.style.color = "#d32f2f";
+                            field.classList.add("is-invalid");
+                            field.classList.remove("is-valid");
+                        }
+                    })
+                    .catch(() => {
+                        feedbackElement.textContent = "Error validating field.";
+                        feedbackElement.style.color = "#d32f2f";
+                        field.classList.add("is-invalid");
+                        field.classList.remove("is-valid");
+                    });
+            });
+        };
+
+        validateField(usernameInput, "/validate-username/", usernameFeedback);
+        validateField(emailInput, "/validate-email/", emailFeedback);
+    });
+
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const togglePassword1 = document.getElementById("togglePassword1");
+        const password1 = document.getElementById("id_password1");
+
+        const eyeIcon = `
+        <svg xmlns="http://www.w3.org/2000/svg" fill="gray" width="20" height="20" viewBox="0 0 24 24">
+            <path d="M12 4.5c-7.78 0-11.54 6.38-11.54 6.38a1.27 1.27 0 000 1.24S4.22 18 12 18s11.54-6.38 11.54-6.38a1.27 1.27 0 000-1.24S19.78 4.5 12 4.5zm0 11a4.51 4.51 0 114.5-4.5 4.5 4.5 0 01-4.5 4.5zm0-7a2.5 2.5 0 102.5 2.5A2.5 2.5 0 0012 8.5z"/>
+        </svg>
+    `;
+
+        const eyeOffIcon = `
+        <svg xmlns="http://www.w3.org/2000/svg" fill="gray" width="20" height="20" viewBox="0 0 24 24">
+            <path d="M12 4.5c-7.78 0-11.54 6.38-11.54 6.38a1.27 1.27 0 000 1.24S4.22 18 12 18s11.54-6.38 11.54-6.38a1.27 1.27 0 000-1.24S19.78 4.5 12 4.5zm0 11a4.51 4.51 0 114.5-4.5 4.5 4.5 0 01-4.5 4.5zm4.5-4.5l-4.5 4.5M16.5 8.5l-4.5-4.5"/>
+        </svg>
+    `;
+
+        togglePassword1.innerHTML = eyeIcon; // Set initial icon
+
+        togglePassword1.addEventListener("click", function () {
+            const isPassword = password1.type === "password";
+            password1.type = isPassword ? "text" : "password";
+            togglePassword1.innerHTML = isPassword ? eyeOffIcon : eyeIcon; // Toggle icon
+        });
+
+        const togglePassword2 = document.getElementById("togglePassword2");
+        const password2 = document.getElementById("id_password2");
+
+        togglePassword2.innerHTML = eyeIcon; // Set initial icon
+
+        togglePassword2.addEventListener("click", function () {
+            const isPassword = password2.type === "password";
+            password2.type = isPassword ? "text" : "password";
+            togglePassword2.innerHTML = isPassword ? eyeOffIcon : eyeIcon; // Toggle icon
+        });
+    });
+</script>
+</body>
+</html>

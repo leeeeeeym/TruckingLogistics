@@ -1,0 +1,306 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Driver Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            display: flex;
+            min-height: 100vh;
+            background-color: #f4f7fc;
+            color: #333;
+        }
+
+        .content {
+            margin-left: 270px;
+            width: calc(100% - 270px);
+            padding: 40px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .header h2 {
+            font-size: 28px;
+            color: #1e3a8a;
+            font-weight: bold;
+        }
+
+        .profile-menu {
+            position: relative;
+        }
+
+        .profile-button {
+            background-color: #1e3a8a;
+            color: white;
+            font-size: 16px;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            min-width: 150px;
+            max-width: 100%;
+            justify-content: space-between;
+            width: auto;
+        }
+
+        .profile-button:hover {
+            background-color: #162d7d;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile-icon {
+            width: 24px;
+            height: 24px;
+            background: url("{% static 'images/profile_icon.png' %}") no-repeat center center;
+            background-size: contain;
+        }
+
+        .profile-username {
+            flex-grow: 1;
+            text-align: center;
+            font-weight: 500;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+
+        .profile-dropdown {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 60px;
+            background-color: #ffffff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            min-width: 150px;
+            width: 100%;
+        }
+
+        .profile-dropdown form button {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            width: 100%;
+            font-size: 14px;
+            color: #333;
+            background: none;
+            border: none;
+            text-align: left;
+            cursor: pointer;
+            gap: 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        .profile-dropdown form button:hover {
+            background-color: #f1f5f9;
+        }
+
+        .profile-menu:hover .profile-dropdown,
+        .profile-menu:focus-within .profile-dropdown {
+            display: block;
+        }
+
+        .table-container {
+            margin-bottom: 40px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .status-header {
+            padding: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+            background-color: #1e3a8a;
+            color: white;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background-color: #f1f5f9;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #f9fafb;
+        }
+
+        tbody tr:hover {
+            background-color: #f1f5f9;
+        }
+
+        .status {
+            font-weight: bold;
+        }
+
+        .status-pending {
+            color: #f59e0b; /* Amber */
+        }
+
+        .status-ongoing {
+            color: #2563eb; /* Blue */
+        }
+
+        .status-completed {
+            color: #10b981; /* Green */
+        }
+
+        .status-cancelled {
+            color: #ef4444; /* Red */
+        }
+
+        .btn-complete, .btn-cancel, .btn-start {
+            padding: 8px 12px;
+            font-size: 14px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            color: white;
+            text-decoration: none;
+            transition: background-color 0.3s ease, transform 0.2s;
+        }
+
+        .btn-complete {
+            background-color: #4caf50;
+        }
+
+        .btn-complete:hover {
+            background-color: #388e3c;
+            transform: translateY(-2px);
+        }
+
+        .btn-cancel {
+            background-color: #f44336;
+        }
+
+        .btn-cancel:hover {
+            background-color: #d32f2f;
+            transform: translateY(-2px);
+        }
+
+        .btn-start {
+            background-color: #1e90ff;
+        }
+
+        .btn-start:hover {
+            background-color: #1c7cd6;
+            transform: translateY(-2px);
+        }
+
+        .status-header-pending {
+    background-color: #f59e0b; /* Amber */
+}
+
+.status-header-ongoing {
+    background-color: #2563eb; /* Blue */
+}
+
+.status-header-completed {
+    background-color: #10b981; /* Green */
+}
+
+.status-header-cancelled {
+    background-color: #ef4444; /* Red */
+}
+    </style>
+</head>
+<body>
+{% include 'includes/sidebar.html' %}
+
+<div class="content">
+    <div class="header">
+        <h2>Driver Dashboard</h2>
+        <div class="profile-menu">
+            <button class="profile-button">
+                <span class="profile-icon"></span>
+                <span class="profile-username">{{ user.username }}</span>
+            </button>
+            <div class="profile-dropdown">
+                <form method="post" action="{% url 'logout' %}">
+                    {% csrf_token %}
+                    <button type="submit">Logout</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    {% for status, containers_group in grouped_containers.items %}
+        <div class="table-container">
+
+
+            <div class="status-header status-header-{{ status|lower }}">
+                {{ status|title }} Containers
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Container Number</th>
+                        <th>Name</th>
+                        <th>Mobile</th>
+                        <th>Size</th>
+                        <th>Weight (kg)</th>
+                        <th>Contents</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for container in containers_group %}
+                    <tr>
+                        <td>{{ container.get_incremented_booking_number }}</td>
+                        <td>{{ container.booking.customer.name }}</td>
+                        <td>{{ container.booking.customer.contact_number }}</td>
+                        <td>{{ container.size }}</td>
+                        <td>{{ container.weight|floatformat:2 }}</td>
+                        <td>{{ container.contents }}</td>
+                        <td class="status status-{{ container.status|lower }}">{{ container.status }}</td>
+                        <td class="actions">
+                            {% if container.status == "Pending" %}
+                                <a href="{% url 'start_container' container.pk %}" class="btn-start">Start</a>
+                            {% elif container.status == "Ongoing" %}
+                                <a href="{% url 'complete_container' container.pk %}" class="btn-complete">Complete</a>
+                                <a href="{% url 'cancel_container' container.pk %}" class="btn-cancel">Cancel</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% endfor %}
+</div>
+</body>
+</html>

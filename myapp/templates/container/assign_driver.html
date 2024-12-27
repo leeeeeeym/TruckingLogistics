@@ -1,0 +1,118 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assign Driver</title>
+    <style>
+        /* Basic Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            display: flex;
+            min-height: 100vh;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+
+        /* Main Content */
+        .content {
+            margin-left: 270px;
+            width: calc(100% - 270px);
+            padding: 40px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .header h2 {
+            font-size: 24px;
+            color: #111827;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #555;
+        }
+
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: #f9fafb;
+        }
+
+        .form-group select:focus {
+            border-color: #1e3a8a;
+            outline: none;
+        }
+
+        .btn {
+            background-color: #1e90ff;
+            color: white;
+            padding: 8px 16px;
+            margin-top: 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            width: fit-content;
+            transition: background-color 0.3s ease, transform 0.2s;
+        }
+
+        .btn:hover {
+            background-color: #1c7cd6;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+{% include 'includes/sidebar.html' %}
+<div class="content">
+    <div class="header">
+        <h2>Assign Driver to Container {{ container.id }}</h2>
+    </div>
+    <div class="form-group">
+        <form method="POST">
+            {% csrf_token %}
+            <label for="driver">Choose Driver:</label>
+            <select name="driver_id" id="driver" required>
+                <option value="">Select a driver</option>
+                {% for driver in drivers %}
+                <option value="{{ driver.id }}">{{ driver.username }}</option>
+                {% endfor %}
+            </select>
+            <br>
+            <button type="submit" class="btn">Assign</button>
+        </form>
+        {% if form.errors %}
+        <div class="error">
+            <ul>
+                {% for error in form.errors %}
+                <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+    </div>
+</div>
+</body>
+</html>

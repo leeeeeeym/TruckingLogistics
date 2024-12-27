@@ -1,0 +1,240 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% if customer.pk %}Edit Customer{% else %}Add Customer{% endif %}</title>
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            display: flex;
+            min-height: 100vh;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+        
+
+        .content {
+            margin-left: 270px;
+            width: calc(100% - 270px);
+            padding: 40px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .header h2 {
+            font-size: 24px;
+            color: #1e3a8a;
+        }
+
+
+        .btn {
+            text-decoration: none;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: bold;
+            color: #ffffff;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: background-color 0.3s ease, transform 0.2s;
+            cursor: pointer;
+        }
+
+        .btn-back {
+            background-color: #1e3a8a;
+        }
+
+        .btn-back:hover {
+            background-color: #162d7d;
+            transform: translateY(-2px);
+        }
+
+        .btn-submit-green {
+            background-color: #4caf50;
+        }
+
+        .btn-submit-green:hover {
+            background-color: #388e3c;
+            transform: translateY(-2px);
+        }
+
+        .btn-submit-blue {
+            background-color: #1e90ff;
+        }
+
+        .btn-submit-blue:hover {
+            background-color: #1c7cd6;
+            transform: translateY(-2px);
+        }
+
+        .card {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            resize: none;
+        }
+
+        .form-group input:focus, .form-group textarea:focus {
+            border-color: #1e3a8a;
+            outline: none;
+        }
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            resize: vertical; /* Allow vertical resizing */
+            height: 100px; /* Adjust this value as needed */
+        }
+        
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 50%;
+            border-radius: 5px;
+        }
+
+        .close-btn {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close-btn:hover,
+        .close-btn:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        ul li {
+            color: red;
+        }
+    </style>
+    <script>
+        function closeModal() {
+            document.getElementById("errorModal").style.display = "none";
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const modal = document.getElementById("errorModal");
+            if (modal) {
+                modal.style.display = "block";
+            }
+        });
+    </script>
+</head>
+<body>
+{% include 'includes/sidebar.html' %}
+
+<div class="content">
+    <div class="header">
+        <h2>{% if customer.pk %}Edit Customer{% else %}Add Customer{% endif %}</h2>
+        <a href="{% url 'customer_list' %}" class="btn btn-back">
+            <span>&larr;</span> Back to Customer Hub
+        </a>
+    </div>
+
+    {% if errors %}
+        <div id="errorModal" class="modal">
+            <div class="modal-content">
+                <span class="close-btn" onclick="closeModal()">&times;</span>
+                <h2>Validation Error</h2>
+                <ul>
+                    {% for field, error_list in errors.items %}
+                        {% for error in error_list %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    {% endif %}
+
+    <div class="card">
+        <form method="POST" action="{% if customer.pk %}{% url 'customer_update' customer.pk %}{% else %}{% url 'customer_create' %}{% endif %}">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="id_name">Name</label>
+                {{ form.name }}
+            </div>
+            <div class="form-group">
+                <label for="id_contact_number">Contact Number</label>
+                {{ form.contact_number }}
+            </div>
+            <div class="form-group">
+                <label for="id_email">Email</label>
+                {{ form.email }}
+            </div>
+            <div class="form-group">
+                <label for="id_address">Address</label>
+                {{ form.address }}
+            </div>
+            <div class="form-group">
+                <label for="id_company_name">Company Name</label>
+                {{ form.company_name }}
+            </div>
+            <button type="submit" class="btn {% if customer.pk %}btn-submit-green{% else %}btn-submit-blue{% endif %}">
+                {% if customer.pk %}Edit Customer{% else %}Add Customer{% endif %}
+            </button>
+        </form>
+    </div>
+</div>
+</body>
+</html>

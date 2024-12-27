@@ -1,0 +1,166 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Container Form</title>
+  <style>
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      display: flex;
+      min-height: 100vh;
+      background-color: #f8f9fa;
+      color: #333;
+    }
+
+
+
+    .content {
+      margin-left: 270px;
+      width: calc(100% - 270px);
+      padding: 40px;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .header h2 {
+      font-size: 24px;
+      color: #1e3a8a;
+    }
+
+    .btn {
+      text-decoration: none;
+      padding: 10px 15px;
+      border-radius: 4px;
+      color: #ffffff;
+      font-size: 14px;
+      font-weight: bold;
+      transition: background-color 0.3s;
+    }
+
+    .btn-success {
+      background-color: #1a237e;
+    }
+
+    .btn-success:hover {
+      background-color: #1a237e;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      font-weight: 600;
+    }
+
+    .form-group input,
+    .form-group select {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus {
+      border-color: #1e3a8a;
+    }
+
+    .form-group button {
+      background-color: #007bff;
+      border: none;
+      padding: 10px 20px;
+      color: white;
+      font-size: 16px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .form-group button:hover {
+      background-color: #0056b3;
+    }
+    .form-group select { 
+      width: 100%; 
+      padding: 10px; 
+      font-size: 16px; 
+      border: 1px solid #ccc; 
+      border-radius: 4px; 
+    } 
+    .form-group select:focus { 
+      border-color: #1e3a8a; 
+    }
+  </style>
+</head>
+<body>
+{% include 'includes/sidebar.html' %}
+
+
+  <div class="content">
+    <div class="header">
+      <h2>Container Form</h2>
+      <a href="{% url 'container_list' %}" class="btn btn-success">Back to Container Hub</a>
+    </div>
+
+    <div class="card">
+      <div class="card-body">
+        <form method="POST" class="form-horizontal">
+          {% csrf_token %}
+            {% if form.errors %}
+                <div class="alert alert-danger">
+                    <ul>
+                        {% for field, errors in form.errors.items %}
+                            <li>{{ field|capfirst }}: {{ errors|join:", " }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+
+            <div class="form-group">
+              <label for="id_booking">Booking</label>
+              {{ form.booking }}
+            </div>
+
+            <div class="form-group">
+              <label for="id_size">Size</label>
+              {{ form.size }}
+            </div>
+
+            <div class="form-group">
+              <label for="id_weight">Weight</label>
+              {{ form.weight }}
+            </div>
+
+            <div class="form-group">
+              <label for="id_contents">Contents</label>
+              {{ form.contents }}
+            </div>
+
+            <div class="form-group">
+              <label for="id_status">Status</label>
+              {{ form.status }}
+            </div>
+
+            <div class="form-group">
+              <button type="submit">Save</button>
+            </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
